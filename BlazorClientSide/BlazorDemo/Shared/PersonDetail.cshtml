@@ -1,0 +1,27 @@
+﻿@using Core.Domain
+<div class="container">
+    <div class="row">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="@person.Picture" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">@person.Name</h5>
+                <p class="card-text">@($"{person.Email} {person.PhoneNumber}")</p>
+                @*<button class="btn btn-success" onclick="@(() => Select(person))">Select</button>
+                <button class="btn btn-success" onclick="@(() => Edit(person))">Edit</button>
+                <button class="btn btn-success" onclick="@(() => Delete(person))">Delete</button>*@
+                @ChildContent
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions
+{
+    [Parameter]
+    private RenderFragment ChildContent { get; set; }
+
+
+    [Parameter]
+    User person { get; set; }
+
+}

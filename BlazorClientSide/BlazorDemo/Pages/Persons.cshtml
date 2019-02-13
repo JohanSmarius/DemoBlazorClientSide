@@ -1,0 +1,93 @@
+﻿@page "/persons"
+@using BlazorDemo.Services
+@using Core.Domain
+@using Microsoft.AspNetCore.Blazor.Services
+
+@inject IPersonService PersonService
+@inject IUriHelper UrlHelper
+
+<div class="alert alert-success">
+    <strong>@WelcomeMessage</strong>
+</div>
+
+<section>
+    <header>Users</header>
+    <article>
+        @foreach (var person in AvailableUsers)
+        {
+            <PersonDetail person="person">
+                <button class="btn btn-success" onclick="@(() => Select(person))">Select</button>
+                <button class="btn btn-success" onclick="@(() => Edit(person))">Edit</button>
+                <button class="btn btn-success" onclick="@(() => Delete(person))">Delete</button>
+            </PersonDetail>
+
+        }
+    </article>
+</section>
+
+@if (SelectedUser != null)
+{
+    <div class="container">
+        <div class="row">
+            <label for="name">Name: </label>
+            <input id="name" bind="@SelectedUser.Name"/>
+        </div>
+    </div>
+}
+
+
+@functions
+{
+
+    string WelcomeMessage = "Welcome DotNED Saturday From Blazor!";
+    User SelectedUser { get; set; }
+
+    List<User> AvailableUsers = new List<User>();
+
+    protected override async Task OnInitAsync()
+    {
+        //AvailableUsers.Add(new User()
+        //{
+        //    Name = "Scott Hanselman",
+        //    Email = "scott@microsoft.com",
+        //    PhoneNumber = "12345468",
+        //    Picture = "https://avatars0.githubusercontent.com/u/2892?s=460&v=4"
+        //});
+
+        //AvailableUsers.Add(new User()
+        //{
+        //    Name = "Scott Guthrie",
+        //    Email = "scott@microsoft.com",
+        //    PhoneNumber = "12345468",
+        //    Picture = "https://sec.ch9.ms/ch9/e6c4/ea6aa4d2-472a-46c1-a31e-b3d86daee6c4/scottguazurewebsitesendpoints_960.jpg?v=744001bc6a23bbf8533bfb48dc1e9372cfe8dbe985ae55b3f5e950865fce9395"
+        //});
+        await PersonService.LoadUsers();
+        AvailableUsers = PersonService.AvailableUsers;
+    }
+
+    void Select(User selectedUser)
+    {
+        SelectedUser = selectedUser;
+        StateHasChanged();
+    }
+
+    void Edit(User selectedUser)
+    {
+        UrlHelper.NavigateTo($"/PersonEdit/{selectedUser.Id}");
+        StateHasChanged();
+    }
+
+    async Task Delete(User selectedUser)
+    {
+        var confirm = await JSInterop.JSInterop.Confirm($"Are you sure to delete {selectedUser.Name}");
+
+
+        if (confirm)
+        {
+            PersonService.AvailableUsers.Remove(selectedUser);
+            AvailableUsers = PersonService.AvailableUsers;
+            StateHasChanged();
+        }
+    }
+
+}
