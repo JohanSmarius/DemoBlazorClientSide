@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using BlazorDemo.Services;
 using Core.Domain;
-using Microsoft.AspNetCore.Blazor.Components;
+using Microsoft.AspNetCore.Blazor;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorDemo.Pages
 {
-    public class PersonEditViewModel : BlazorComponent
+    public class PersonEditViewModel : ComponentBase
     {
         [Inject]
         private IPersonService UserService { get; set; }
