@@ -6,11 +6,18 @@ using Microsoft.JSInterop;
 
 namespace BlazorDemo.JSInterop
 {
-    public class JSInterop
+    public class JSInterop : IJSInterop
     {
-        public static Task<bool> Confirm(string message)
+        private readonly IJSRuntime _jsRuntime;
+
+        public JSInterop(IJSRuntime jsRuntime)
         {
-            return JSRuntime.Current.InvokeAsync<bool>("helperfunction.confirm", message);
+            _jsRuntime = jsRuntime;
+        }
+
+        public Task<bool> Confirm(string message)
+        {
+            return _jsRuntime.InvokeAsync<bool>("helperfunction.confirm", message);
         }
     }
 }

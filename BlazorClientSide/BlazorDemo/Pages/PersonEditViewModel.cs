@@ -27,5 +27,10 @@ namespace BlazorDemo.Pages
         {
             Person = UserService.AvailableUsers.First(person => person.Id == Id);
         }
+
+        protected override void OnParametersSet()
+        {
+            base.OnParametersSet();
+        }
     }
 }

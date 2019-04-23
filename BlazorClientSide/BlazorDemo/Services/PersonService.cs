@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Core.Domain;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Services;
 
 namespace BlazorDemo.Services
 {
@@ -55,6 +54,7 @@ namespace BlazorDemo.Services
                 Picture = "https://sec.ch9.ms/ch9/e6c4/ea6aa4d2-472a-46c1-a31e-b3d86daee6c4/scottguazurewebsitesendpoints_960.jpg?v=744001bc6a23bbf8533bfb48dc1e9372cfe8dbe985ae55b3f5e950865fce9395"
             });
 
+            await Task.Yield();
         }
     }
 }
